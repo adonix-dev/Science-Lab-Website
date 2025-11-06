@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab – Expérimentez les limites du réel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=IBM+Plex+Mono:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js" defer></script>
+    <script type="module" src="./js/main.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header class="site-header fade-in">
+        <h1>Lab</h1>
+        <p>Expérimentez les limites du réel.</p>
+      </header>
+
+      <section class="search-bar fade-in" style="animation-delay: 120ms">
+        <label class="sr-only" for="search">Rechercher un phénomène</label>
+        <input
+          id="search"
+          data-search
+          type="search"
+          placeholder="Rechercher une expérience (onde, intrication, spin...)"
+        />
+      </section>
+
+      <section class="grid" data-grid></section>
+    </main>
+
+    <footer class="site-footer fade-in" style="animation-delay: 200ms">
+      © <span id="year"></span> Lab · Laboratoire quantique interactif
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

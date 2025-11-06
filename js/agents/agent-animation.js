@@ -56,7 +56,7 @@ export class AgentAnimation {
       this.currentSketch.remove();
     }
 
-    const sketchFactory = (p) => definition.sketch(p, this.state, this.physics);
+    const sketchFactory = (p) => definition.sketch(p, this.state, this.physics, container);
     this.currentSketch = new window.p5(sketchFactory, container);
     if (typeof definition.postCreate === 'function') {
       definition.postCreate(this.currentSketch);
@@ -97,14 +97,18 @@ export class AgentAnimation {
           { key: 'barrierHeight', label: 'Hauteur de barrière', min: 2, max: 8, step: 0.1, type: 'range', unit: 'V₀' },
           { key: 'barrierWidth', label: 'Épaisseur de barrière', min: 0.5, max: 3, step: 0.1, type: 'range', unit: 'L' }
         ],
-        sketch: (p, state, physics) => {
+        sketch: (p, state, physics, container) => {
           let phase = 0;
+          const getParentWidth = () => {
+            if (!container) return window.innerWidth || 720;
+            return container.clientWidth || container.offsetWidth || 720;
+          };
           p.setup = () => {
-            const canvas = p.createCanvas(p.parent().offsetWidth, 360);
+            const canvas = p.createCanvas(getParentWidth(), 360);
             canvas.style('width', '100%');
           };
           p.windowResized = () => {
-            p.resizeCanvas(p.parent().offsetWidth, 360);
+            p.resizeCanvas(getParentWidth(), 360);
           };
           p.draw = () => {
             p.background(9, 12, 20);
@@ -171,14 +175,18 @@ export class AgentAnimation {
           { key: 'slitOpen', label: 'Nombre de fentes ouvertes', min: 1, max: 2, step: 1, type: 'range' },
           { key: 'detector', label: 'Détecteur de chemin', min: 0, max: 1, step: 1, type: 'range' }
         ],
-        sketch: (p, state) => {
+        sketch: (p, state, _physics, container) => {
           const impacts = [];
+          const getParentWidth = () => {
+            if (!container) return window.innerWidth || 720;
+            return container.clientWidth || container.offsetWidth || 720;
+          };
           p.setup = () => {
-            const canvas = p.createCanvas(p.parent().offsetWidth, 360);
+            const canvas = p.createCanvas(getParentWidth(), 360);
             canvas.style('width', '100%');
           };
           p.windowResized = () => {
-            p.resizeCanvas(p.parent().offsetWidth, 360);
+            p.resizeCanvas(getParentWidth(), 360);
           };
           p.draw = () => {
             p.background(8, 11, 18);
@@ -245,13 +253,17 @@ export class AgentAnimation {
         controls: [
           { key: 'phase', label: 'Différence de phase (°)', min: 0, max: 360, step: 1, type: 'range' }
         ],
-        sketch: (p, state) => {
+        sketch: (p, state, _physics, container) => {
+          const getParentWidth = () => {
+            if (!container) return window.innerWidth || 720;
+            return container.clientWidth || container.offsetWidth || 720;
+          };
           p.setup = () => {
-            const canvas = p.createCanvas(p.parent().offsetWidth, 320);
+            const canvas = p.createCanvas(getParentWidth(), 320);
             canvas.style('width', '100%');
           };
           p.windowResized = () => {
-            p.resizeCanvas(p.parent().offsetWidth, 320);
+            p.resizeCanvas(getParentWidth(), 320);
           };
           p.draw = () => {
             p.background(10, 13, 22);
@@ -291,14 +303,18 @@ export class AgentAnimation {
           { key: 'frequency', label: 'Fréquence lumineuse (10¹⁴ Hz)', min: 4, max: 9, step: 0.1, type: 'range' },
           { key: 'workFunction', label: 'Travail d’extraction (10⁻¹⁹ J)', min: 3, max: 7, step: 0.1, type: 'range' }
         ],
-        sketch: (p, state, physics) => {
+        sketch: (p, state, physics, container) => {
           const electrons = [];
+          const getParentWidth = () => {
+            if (!container) return window.innerWidth || 720;
+            return container.clientWidth || container.offsetWidth || 720;
+          };
           p.setup = () => {
-            const canvas = p.createCanvas(p.parent().offsetWidth, 320);
+            const canvas = p.createCanvas(getParentWidth(), 320);
             canvas.style('width', '100%');
           };
           p.windowResized = () => {
-            p.resizeCanvas(p.parent().offsetWidth, 320);
+            p.resizeCanvas(getParentWidth(), 320);
           };
           p.draw = () => {
             p.background(8, 12, 18);
@@ -361,14 +377,18 @@ export class AgentAnimation {
         controls: [
           { key: 'angle', label: 'Orientation du champ (°)', min: -90, max: 90, step: 1, type: 'range' }
         ],
-        sketch: (p, state) => {
+        sketch: (p, state, _physics, container) => {
           const particles = [];
+          const getParentWidth = () => {
+            if (!container) return window.innerWidth || 720;
+            return container.clientWidth || container.offsetWidth || 720;
+          };
           p.setup = () => {
-            const canvas = p.createCanvas(p.parent().offsetWidth, 320);
+            const canvas = p.createCanvas(getParentWidth(), 320);
             canvas.style('width', '100%');
           };
           p.windowResized = () => {
-            p.resizeCanvas(p.parent().offsetWidth, 320);
+            p.resizeCanvas(getParentWidth(), 320);
           };
           p.draw = () => {
             p.background(10, 14, 22);
@@ -421,13 +441,17 @@ export class AgentAnimation {
           { key: 'angleA', label: 'Polariseur A (°)', min: 0, max: 180, step: 1, type: 'range' },
           { key: 'angleB', label: 'Polariseur B (°)', min: 0, max: 180, step: 1, type: 'range' }
         ],
-        sketch: (p, state, physics) => {
+        sketch: (p, state, physics, container) => {
+          const getParentWidth = () => {
+            if (!container) return window.innerWidth || 720;
+            return container.clientWidth || container.offsetWidth || 720;
+          };
           p.setup = () => {
-            const canvas = p.createCanvas(p.parent().offsetWidth, 320);
+            const canvas = p.createCanvas(getParentWidth(), 320);
             canvas.style('width', '100%');
           };
           p.windowResized = () => {
-            p.resizeCanvas(p.parent().offsetWidth, 320);
+            p.resizeCanvas(getParentWidth(), 320);
           };
           p.draw = () => {
             p.background(6, 10, 18);
@@ -485,13 +509,17 @@ export class AgentAnimation {
           { key: 'angleB', label: 'b (°)', min: 0, max: 180, step: 1, type: 'range' },
           { key: 'angleBprime', label: "b' (°)", min: 0, max: 180, step: 1, type: 'range' }
         ],
-        sketch: (p, state, physics) => {
+        sketch: (p, state, physics, container) => {
+          const getParentWidth = () => {
+            if (!container) return window.innerWidth || 720;
+            return container.clientWidth || container.offsetWidth || 720;
+          };
           p.setup = () => {
-            const canvas = p.createCanvas(p.parent().offsetWidth, 340);
+            const canvas = p.createCanvas(getParentWidth(), 340);
             canvas.style('width', '100%');
           };
           p.windowResized = () => {
-            p.resizeCanvas(p.parent().offsetWidth, 340);
+            p.resizeCanvas(getParentWidth(), 340);
           };
           p.draw = () => {
             p.background(8, 11, 19);

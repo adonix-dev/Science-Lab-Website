@@ -15,10 +15,21 @@ export class AgentInterface {
   }
 
   init() {
-    if (this.pageType === 'index') {
-      this.buildIndexPage();
+    const buildPage = () => {
+      if (this.pageType === 'index') {
+        this.buildIndexPage();
+      } else {
+        this.buildExperimentPage();
+      }
+    };
+
+    if (this.dataAgent.ready) {
+      buildPage();
     } else {
-      this.buildExperimentPage();
+      const dispose = this.bus.once('data:ready', () => {
+        buildPage();
+      });
+      this.cleanupCallbacks.push(dispose);
     }
   }
 

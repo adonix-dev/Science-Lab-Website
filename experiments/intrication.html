@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intrication quantique – Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=IBM+Plex+Mono:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js" defer></script>
+    <script type="module" src="../js/main.js" defer></script>
+  </head>
+  <body data-experiment-id="intrication">
+    <main>
+      <div class="page-container" data-experiment-container>
+        <article class="experiment-text">
+          <h2 data-title></h2>
+          <p data-summary></p>
+          <div class="details-toggle">
+            <button data-toggle-details aria-expanded="false">Afficher “Pour aller plus loin”</button>
+            <div class="details-content" data-details hidden>
+              <p data-academic></p>
+            </div>
+          </div>
+        </article>
+        <section class="animation-wrapper">
+          <div class="animation-header">
+            <h3>Visualisation interactive</h3>
+            <button class="replay-button" data-replay>Rejouer l’expérience</button>
+          </div>
+          <div class="animation-canvas" data-canvas></div>
+          <p class="details-content" data-animation-notes></p>
+          <div class="controls" data-controls></div>
+        </section>
+      </div>
+      <div class="page-actions">
+        <button class="return-button" data-return>Retour au Lab</button>
+      </div>
+    </main>
+  </body>
+</html>

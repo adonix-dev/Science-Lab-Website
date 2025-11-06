@@ -250,6 +250,17 @@ header.site-header p {
   position: relative;
 }
 
+.animation-wrapper .animation-error {
+  margin: 0;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: var(--accent-color);
+  background: rgba(10, 16, 26, 0.85);
+  border-radius: 18px;
+  border: 1px solid rgba(58, 215, 255, 0.2);
+  font-weight: 500;
+}
+
 .animation-header {
   display: flex;
   align-items: center;

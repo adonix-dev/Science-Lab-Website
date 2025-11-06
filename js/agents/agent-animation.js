@@ -50,14 +50,36 @@ export class AgentAnimation {
 
     this.state = { ...definition.initialState };
     const container = document.querySelector('[data-canvas]');
-    if (!container) return;
+    const hostElement = container instanceof HTMLElement ? container : null;
+    if (!hostElement) {
+      console.error('[AgentAnimation] Aucun conteneur de canvas disponible.');
+      return;
+    }
+
+    hostElement.innerHTML = '';
+    hostElement.dataset.mounted = 'true';
 
     if (this.currentSketch && this.currentSketch.remove) {
       this.currentSketch.remove();
     }
 
-    const sketchFactory = (p) => definition.sketch(p, this.state, this.physics, container);
-    this.currentSketch = new window.p5(sketchFactory, container);
+    if (typeof window.p5 !== 'function') {
+      console.error('[AgentAnimation] p5.js est introuvable sur window.');
+      hostElement.innerHTML =
+        '<p class="animation-error">Impossible de charger l\'animation. Veuillez vérifier votre connexion.</p>';
+      return;
+    }
+
+    const sketchFactory = (p) => definition.sketch(p, this.state, this.physics, hostElement);
+
+    try {
+      this.currentSketch = new window.p5(sketchFactory);
+    } catch (error) {
+      console.error('[AgentAnimation] Échec de l\'initialisation de p5', error);
+      hostElement.innerHTML =
+        '<p class="animation-error">Une erreur est survenue lors du démarrage de l\'expérience.</p>';
+      return;
+    }
     if (typeof definition.postCreate === 'function') {
       definition.postCreate(this.currentSketch);
     }
@@ -85,6 +107,48 @@ export class AgentAnimation {
       }
     };
 
+    const createResponsiveCanvas = (p, container, height) => {
+      const host = container instanceof HTMLElement ? container : null;
+
+      const computeWidth = () => {
+        if (host) {
+          const rect = host.getBoundingClientRect();
+          if (rect && rect.width) {
+            return Math.round(rect.width);
+          }
+          if (host.clientWidth) return host.clientWidth;
+          if (host.offsetWidth) return host.offsetWidth;
+        }
+        const doc = document.documentElement;
+        const viewport = window.innerWidth || (doc ? doc.clientWidth : 0) || 720;
+        return Math.max(320, Math.min(Math.round(viewport), 1024));
+      };
+
+      const attach = (canvas) => {
+        if (!canvas) return;
+        if (typeof canvas.style === 'function') {
+          canvas.style('width', '100%');
+        } else if (canvas?.elt) {
+          canvas.elt.style.width = '100%';
+        }
+
+        if (host && canvas?.elt && host !== canvas.elt.parentElement) {
+          host.appendChild(canvas.elt);
+        }
+      };
+
+      return {
+        mount: () => {
+          const canvas = p.createCanvas(computeWidth(), height);
+          attach(canvas);
+          return canvas;
+        },
+        resize: () => {
+          p.resizeCanvas(computeWidth(), height);
+        }
+      };
+    };
+
     return {
       'effet-tunnel': {
         initialState: {
@@ -99,16 +163,12 @@ export class AgentAnimation {
         ],
         sketch: (p, state, physics, container) => {
           let phase = 0;
-          const getParentWidth = () => {
-            if (!container) return window.innerWidth || 720;
-            return container.clientWidth || container.offsetWidth || 720;
-          };
+          const responsive = createResponsiveCanvas(p, container, 360);
           p.setup = () => {
-            const canvas = p.createCanvas(getParentWidth(), 360);
-            canvas.style('width', '100%');
+            responsive.mount();
           };
           p.windowResized = () => {
-            p.resizeCanvas(getParentWidth(), 360);
+            responsive.resize();
           };
           p.draw = () => {
             p.background(9, 12, 20);
@@ -177,16 +237,12 @@ export class AgentAnimation {
         ],
         sketch: (p, state, _physics, container) => {
           const impacts = [];
-          const getParentWidth = () => {
-            if (!container) return window.innerWidth || 720;
-            return container.clientWidth || container.offsetWidth || 720;
-          };
+          const responsive = createResponsiveCanvas(p, container, 360);
           p.setup = () => {
-            const canvas = p.createCanvas(getParentWidth(), 360);
-            canvas.style('width', '100%');
+            responsive.mount();
           };
           p.windowResized = () => {
-            p.resizeCanvas(getParentWidth(), 360);
+            responsive.resize();
           };
           p.draw = () => {
             p.background(8, 11, 18);
@@ -254,16 +310,12 @@ export class AgentAnimation {
           { key: 'phase', label: 'Différence de phase (°)', min: 0, max: 360, step: 1, type: 'range' }
         ],
         sketch: (p, state, _physics, container) => {
-          const getParentWidth = () => {
-            if (!container) return window.innerWidth || 720;
-            return container.clientWidth || container.offsetWidth || 720;
-          };
+          const responsive = createResponsiveCanvas(p, container, 320);
           p.setup = () => {
-            const canvas = p.createCanvas(getParentWidth(), 320);
-            canvas.style('width', '100%');
+            responsive.mount();
           };
           p.windowResized = () => {
-            p.resizeCanvas(getParentWidth(), 320);
+            responsive.resize();
           };
           p.draw = () => {
             p.background(10, 13, 22);
@@ -305,16 +357,12 @@ export class AgentAnimation {
         ],
         sketch: (p, state, physics, container) => {
           const electrons = [];
-          const getParentWidth = () => {
-            if (!container) return window.innerWidth || 720;
-            return container.clientWidth || container.offsetWidth || 720;
-          };
+          const responsive = createResponsiveCanvas(p, container, 320);
           p.setup = () => {
-            const canvas = p.createCanvas(getParentWidth(), 320);
-            canvas.style('width', '100%');
+            responsive.mount();
           };
           p.windowResized = () => {
-            p.resizeCanvas(getParentWidth(), 320);
+            responsive.resize();
           };
           p.draw = () => {
             p.background(8, 12, 18);
@@ -379,16 +427,12 @@ export class AgentAnimation {
         ],
         sketch: (p, state, _physics, container) => {
           const particles = [];
-          const getParentWidth = () => {
-            if (!container) return window.innerWidth || 720;
-            return container.clientWidth || container.offsetWidth || 720;
-          };
+          const responsive = createResponsiveCanvas(p, container, 320);
           p.setup = () => {
-            const canvas = p.createCanvas(getParentWidth(), 320);
-            canvas.style('width', '100%');
+            responsive.mount();
           };
           p.windowResized = () => {
-            p.resizeCanvas(getParentWidth(), 320);
+            responsive.resize();
           };
           p.draw = () => {
             p.background(10, 14, 22);
@@ -442,16 +486,12 @@ export class AgentAnimation {
           { key: 'angleB', label: 'Polariseur B (°)', min: 0, max: 180, step: 1, type: 'range' }
         ],
         sketch: (p, state, physics, container) => {
-          const getParentWidth = () => {
-            if (!container) return window.innerWidth || 720;
-            return container.clientWidth || container.offsetWidth || 720;
-          };
+          const responsive = createResponsiveCanvas(p, container, 320);
           p.setup = () => {
-            const canvas = p.createCanvas(getParentWidth(), 320);
-            canvas.style('width', '100%');
+            responsive.mount();
           };
           p.windowResized = () => {
-            p.resizeCanvas(getParentWidth(), 320);
+            responsive.resize();
           };
           p.draw = () => {
             p.background(6, 10, 18);
@@ -510,16 +550,12 @@ export class AgentAnimation {
           { key: 'angleBprime', label: "b' (°)", min: 0, max: 180, step: 1, type: 'range' }
         ],
         sketch: (p, state, physics, container) => {
-          const getParentWidth = () => {
-            if (!container) return window.innerWidth || 720;
-            return container.clientWidth || container.offsetWidth || 720;
-          };
+          const responsive = createResponsiveCanvas(p, container, 340);
           p.setup = () => {
-            const canvas = p.createCanvas(getParentWidth(), 340);
-            canvas.style('width', '100%');
+            responsive.mount();
           };
           p.windowResized = () => {
-            p.resizeCanvas(getParentWidth(), 340);
+            responsive.resize();
           };
           p.draw = () => {
             p.background(8, 11, 19);
@@ -563,5 +599,10 @@ export class AgentAnimation {
       this.currentSketch.remove();
     }
     this.currentSketch = null;
+    const host = document.querySelector('[data-canvas]');
+    if (host instanceof HTMLElement) {
+      host.innerHTML = '';
+      delete host.dataset.mounted;
+    }
   }
 }

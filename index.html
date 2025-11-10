@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab — Expérimentez les limites du réel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body data-page="index">
+    <header class="hero">
+      <div class="hero__content">
+        <h1 class="hero__title">Lab</h1>
+        <p class="hero__baseline">Expérimentez les limites du réel.</p>
+        <label class="search" for="searchInput">
+          <span class="search__label">Rechercher une expérience</span>
+          <input id="searchInput" type="search" placeholder="intrication, interférences, spin…" autocomplete="off" />
+        </label>
+      </div>
+    </header>
+    <main class="layout">
+      <section class="cards" id="experimentsGrid" aria-live="polite"></section>
+    </main>
+    <template id="cardTemplate">
+      <article class="card">
+        <a class="card__link" href="#">
+          <h2 class="card__title"></h2>
+          <p class="card__summary"></p>
+          <span class="card__cta">Explorer</span>
+        </a>
+      </article>
+    </template>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

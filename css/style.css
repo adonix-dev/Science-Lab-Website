@@ -419,22 +419,22 @@ footer.site-footer {
   letter-spacing: 0.04em;
 }
 
-body[data-page='experiment'] header.site-header {
+body[data-route='detail'] header.site-header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.6rem;
 }
 
-body[data-page='experiment'] header.site-header h1 {
+body[data-route='detail'] header.site-header h1 {
   margin: 0;
 }
 
-body[data-page='experiment'] main {
+body[data-route='detail'] main {
   width: min(1200px, 92vw);
 }
 
-body[data-page='experiment'] .return-button {
+body[data-route='detail'] .return-button {
   align-self: flex-start;
 }
 .control-value {

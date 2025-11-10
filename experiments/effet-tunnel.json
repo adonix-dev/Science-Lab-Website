@@ -12,7 +12,6 @@
     }
   ],
   "animation": {
-    "type": "tunnel",
     "description": "Visualisation d'un paquet d'ondes qui rencontre une barrière potentielle modulable. Les curseurs contrôlent l'énergie incidente et la largeur de la barrière pour observer l'amplitude transmise.",
     "controls": [
       {
@@ -48,6 +47,10 @@
     ],
     "parameters": {
       "speed": 0.9
+    },
+    "sketch": {
+      "library": "p5",
+      "code": "(() => {\n  return {\n    setup({ state, params }) {\n      state.time = 0;\n      state.speed = params.speed || 0.9;\n    },\n    draw({ p, state, helpers }) {\n      const width = p.width;\n      const height = p.height;\n      p.background(11, 13, 19);\n      state.time += 0.012 * (state.speed || 0.9);\n      const transmission = helpers.physics.tunnelTransmission({\n        energy: state.energy,\n        barrierHeight: state.barrierHeight,\n        barrierWidth: state.barrierWidth\n      });\n      const barrierWidthPx = width * (0.25 + state.barrierWidth * 0.35);\n      const barrierLeft = width * 0.45;\n      const barrierRight = barrierLeft + barrierWidthPx;\n      const barrierHeightPx = height * (0.2 + state.barrierHeight * 0.5);\n      p.noStroke();\n      p.fill(20, 28, 45, 220);\n      p.rect(barrierLeft, (height - barrierHeightPx) / 2, barrierWidthPx, barrierHeightPx, 16);\n      const drawWave = (startX, endX, amplitude, alpha) => {\n        const steps = 180;\n        p.stroke(58, 215, 255, alpha);\n        p.noFill();\n        p.beginShape();\n        for (let i = 0; i <= steps; i += 1) {\n          const t = i / steps;\n          const x = p.lerp(startX, endX, t);\n          const phase = state.time * 3 + t * 18;\n          const envelope = Math.min(1, Math.exp((x - startX) / 120));\n          const y = height / 2 + Math.sin(phase) * amplitude * envelope;\n          p.vertex(x, y);\n        }\n        p.endShape();\n      };\n      drawWave(width * 0.05, barrierLeft, height * (0.2 + state.energy * 0.2), 220);\n      p.stroke(120, 150, 255, 120);\n      p.noFill();\n      p.beginShape();\n      const stepsBarrier = 60;\n      for (let i = 0; i <= stepsBarrier; i += 1) {\n        const t = i / stepsBarrier;\n        const x = p.lerp(barrierLeft, barrierRight, t);\n        const decay = Math.exp(-t * 4 * (state.barrierHeight - state.energy + 0.3));\n        const y = height / 2 + Math.sin(state.time * 3 + t * 8) * height * 0.18 * decay;\n        p.vertex(x, y);\n      }\n      p.endShape();\n      drawWave(barrierRight, width * 0.95, height * 0.18 * transmission, 160);\n      p.noStroke();\n      p.fill(58, 215, 255, 190);\n      p.textSize(14);\n      p.textAlign(p.LEFT, p.TOP);\n      p.text(`Transmission ~ ${(transmission * 100).toFixed(0)}%`, 20, 20);\n      p.text(`E = ${state.energy.toFixed(2)}  |  V₀ = ${state.barrierHeight.toFixed(2)}  |  L = ${state.barrierWidth.toFixed(2)}`, 20, 40);\n    },\n    update({ state, key, value }) {\n      state[key] = value;\n    },\n    replay({ state }) {\n      state.time = 0;\n    }\n  };\n})()"
     }
   }
 }

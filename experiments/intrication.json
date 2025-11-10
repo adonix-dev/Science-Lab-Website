@@ -2,18 +2,17 @@
   "id": "intrication",
   "title": "Intrication quantique",
   "icon": "🪐",
-  "summary": "Deux particules intriquées affichent des corrélations fortes, indépendamment de la distance qui les sépare.",
+  "summary": "Deux particules peuvent être liées de manière telle que la mesure de l’une détermine instantanément l’état de l’autre, quelle que soit la distance. Le système forme un tout indivisible.",
   "introduction": "L'intrication relie deux systèmes en un tout unique : mesurer l'un d'eux fixe instantanément le résultat de l'autre selon la base choisie, sans permettre de signaler plus vite que la lumière.",
   "tags": ["corrélation", "polariseur", "bell"],
   "further": [
     {
       "label": "Universitaire",
-      "content": "Un état singulet de deux spins vaut |Ψ⁻⟩ = (|↑↓⟩ - |↓↑⟩)/√2. Les mesures de spin sur des axes séparés donnent une corrélation -cos(θ_A - θ_B). Les inégalités de Bell, comme CHSH, sont violées avec une valeur maximale 2√2." 
+      "content": "Un état singulet de deux spins vaut |Ψ⁻⟩ = (|↑↓⟩ - |↓↑⟩)/√2. Les mesures de spin sur des axes séparés donnent une corrélation -cos(θ_A - θ_B). Les inégalités de Bell, comme CHSH, sont violées avec une valeur maximale 2√2."
     }
   ],
   "animation": {
-    "type": "entanglement",
-    "description": "Deux polariseurs rotatifs mesurent des photons intriqués. Les curseurs fixent les angles de mesure et montrent la corrélation cosinus.",
+    "description": "Deux polariseurs A/B à angles réglables ; tracer corrélation cosinus et résultats de coïncidences.",
     "controls": [
       {
         "id": "angleA",
@@ -38,6 +37,10 @@
     ],
     "parameters": {
       "sampleSize": 200
+    },
+    "sketch": {
+      "library": "p5",
+      "code": "(() => {\n  const drawPolarizer = (p, center, angle, correlation) => {\n    p.push();\n    p.translate(center.x, center.y);\n    p.rotate((angle * Math.PI) / 180);\n    p.fill(25, 36, 58, 200);\n    p.stroke(58, 215, 255, 160);\n    p.strokeWeight(2);\n    p.rect(-14, -60, 28, 120, 12);\n    p.pop();\n    p.noStroke();\n    p.fill(58, 215, 255, 200);\n    p.circle(center.x, center.y, 18);\n    p.fill(8, 10, 18, 200);\n    p.textAlign(p.CENTER, p.CENTER);\n    p.textSize(12);\n    p.text(correlation > 0 ? '+' : '−', center.x, center.y);\n  };\n  const regenerate = (state, physics) => {\n    state.measurements = [];\n    const correlation = physics.entanglementCorrelation(state.angleA || 0, state.angleB || 0);\n    const sameProb = (correlation + 1) / 2;\n    let sameCount = 0;\n    for (let i = 0; i < state.sampleSize; i += 1) {\n      const same = Math.random() < sameProb;\n      const resultA = Math.random() > 0.5 ? 1 : -1;\n      const resultB = same ? resultA : -resultA;\n      state.measurements.push({ same, a: resultA, b: resultB });\n      if (same) sameCount += 1;\n    }\n    state.sameCount = sameCount;\n    state.diffCount = state.sampleSize - sameCount;\n  };\n  return {\n    setup({ state, params, helpers }) {\n      state.sampleSize = params.sampleSize || 200;\n      regenerate(state, helpers.physics);\n    },\n    draw({ p, state, helpers }) {\n      const width = p.width;\n      const height = p.height;\n      p.background(8, 10, 18, 245);\n      const correlation = helpers.physics.entanglementCorrelation(state.angleA || 0, state.angleB || 0);\n      p.noStroke();\n      p.fill(58, 215, 255, 180);\n      p.textAlign(p.LEFT, p.TOP);\n      p.textSize(14);\n      p.text(`Polariseur A: ${(state.angleA || 0).toFixed(0)}°`, 20, 20);\n      p.text(`Polariseur B: ${(state.angleB || 0).toFixed(0)}°`, 20, 40);\n      p.text(`Corrélation ⟨A·B⟩ = ${correlation.toFixed(2)}`, 20, 60);\n      const centerLeft = { x: width * 0.3, y: height * 0.55 };\n      const centerRight = { x: width * 0.7, y: height * 0.55 };\n      drawPolarizer(p, centerLeft, state.angleA || 0, correlation);\n      drawPolarizer(p, centerRight, state.angleB || 0, correlation);\n      p.stroke(58, 215, 255, 120 + Math.abs(correlation) * 80);\n      p.noFill();\n      p.strokeWeight(3);\n      p.bezier(centerLeft.x + 40, centerLeft.y, width * 0.45, height * 0.2, width * 0.55, height * 0.9, centerRight.x - 40, centerRight.y);\n      const radius = Math.min(width, height) * 0.18;\n      state.measurements.slice(0, 120).forEach((m, index) => {\n        const angle = (index / 120) * Math.PI * 2;\n        const r = radius * (0.6 + 0.4 * (m.same ? 1 : 0.6));\n        const x = width * 0.5 + Math.cos(angle) * r;\n        const y = height * 0.55 + Math.sin(angle) * r;\n        const alpha = m.same ? 220 : 120;\n        p.noStroke();\n        p.fill(58, 215, 255, alpha);\n        p.circle(x, y, m.same ? 6 : 4);\n      });\n      p.noStroke();\n      p.fill(58, 215, 255, 180);\n      const barWidth = width * 0.18;\n      const baseY = height * 0.85;\n      const scale = height * 0.25 / state.sampleSize;\n      p.rect(width * 0.25, baseY - state.sameCount * scale, barWidth, state.sameCount * scale, 10);\n      p.rect(width * 0.57, baseY - state.diffCount * scale, barWidth, state.diffCount * scale, 10);\n      p.textAlign(p.CENTER, p.TOP);\n      p.text(`Résultats identiques (${state.sameCount})`, width * 0.25 + barWidth / 2, baseY + 8);\n      p.text(`Résultats opposés (${state.diffCount})`, width * 0.57 + barWidth / 2, baseY + 8);\n    },\n    update({ state, key, value, helpers }) {\n      state[key] = value;\n      regenerate(state, helpers.physics);\n    },\n    replay({ state, helpers }) {\n      regenerate(state, helpers.physics);\n    }\n  };\n})()"
     }
   }
 }

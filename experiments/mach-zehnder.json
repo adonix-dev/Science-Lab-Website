@@ -1,0 +1,33 @@
+{
+  "id": "mach-zehnder",
+  "title": "Interféromètre de Mach-Zehnder",
+  "icon": "🪞",
+  "summary": "Un photon se sépare en deux chemins, acquiert une différence de phase puis est recombiné : les interférences déterminent le détecteur qui clique.",
+  "introduction": "L'interféromètre de Mach-Zehnder est une double fente fermée : deux séparateurs de faisceau encadrent des chemins où l'on peut introduire un déphasage contrôlé.",
+  "tags": ["interférence", "phase", "photons"],
+  "further": [
+    {
+      "label": "Universitaire",
+      "content": "Après le premier séparateur, l'état du photon est (|A⟩ + |B⟩)/√2. Un déphasage Δφ le transforme en (|A⟩ + e^{iΔφ}|B⟩)/√2 et les probabilités de détection deviennent P₁ = cos²(Δφ/2), P₂ = sin²(Δφ/2)." 
+    }
+  ],
+  "animation": {
+    "type": "machZehnder",
+    "description": "Deux bras optiques représentant les chemins A et B, avec un curseur de phase qui fait osciller la probabilité d'arrivée sur les détecteurs.",
+    "controls": [
+      {
+        "id": "phase",
+        "label": "Déphasage Δφ",
+        "type": "range",
+        "min": 0,
+        "max": 6.283,
+        "step": 0.01,
+        "value": 1.047,
+        "unit": "rad"
+      }
+    ],
+    "parameters": {
+      "pulseInterval": 1600
+    }
+  }
+}

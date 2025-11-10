@@ -1,0 +1,43 @@
+{
+  "id": "intrication",
+  "title": "Intrication quantique",
+  "icon": "🪐",
+  "summary": "Deux particules intriquées affichent des corrélations fortes, indépendamment de la distance qui les sépare.",
+  "introduction": "L'intrication relie deux systèmes en un tout unique : mesurer l'un d'eux fixe instantanément le résultat de l'autre selon la base choisie, sans permettre de signaler plus vite que la lumière.",
+  "tags": ["corrélation", "polariseur", "bell"],
+  "further": [
+    {
+      "label": "Universitaire",
+      "content": "Un état singulet de deux spins vaut |Ψ⁻⟩ = (|↑↓⟩ - |↓↑⟩)/√2. Les mesures de spin sur des axes séparés donnent une corrélation -cos(θ_A - θ_B). Les inégalités de Bell, comme CHSH, sont violées avec une valeur maximale 2√2." 
+    }
+  ],
+  "animation": {
+    "type": "entanglement",
+    "description": "Deux polariseurs rotatifs mesurent des photons intriqués. Les curseurs fixent les angles de mesure et montrent la corrélation cosinus.",
+    "controls": [
+      {
+        "id": "angleA",
+        "label": "Polariseur A",
+        "type": "range",
+        "min": 0,
+        "max": 180,
+        "step": 1,
+        "value": 0,
+        "unit": "°"
+      },
+      {
+        "id": "angleB",
+        "label": "Polariseur B",
+        "type": "range",
+        "min": 0,
+        "max": 180,
+        "step": 1,
+        "value": 45,
+        "unit": "°"
+      }
+    ],
+    "parameters": {
+      "sampleSize": 200
+    }
+  }
+}

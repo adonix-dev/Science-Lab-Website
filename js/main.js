@@ -1,25 +1,25 @@
 import { EventBus } from './utils/event-bus.js';
-import { AgentData } from './agents/agent-data.js';
-import { AgentInterface } from './agents/agent-interface.js';
-import { AgentAnimation } from './agents/agent-animation.js';
-import { AgentPhysics } from './agents/agent-physics.js';
-import { AgentUI } from './agents/agent-ui.js';
-import { AgentTheme } from './agents/agent-theme.js';
-import { AgentLogger } from './agents/agent-logger.js';
+import { DataAgent } from './agents/data-agent.js';
+import { InterfaceAgent } from './agents/interface-agent.js';
+import { AnimationAgent } from './agents/animation-agent.js';
+import { PhysicsAgent } from './agents/physics-agent.js';
+import { UIAgent } from './agents/ui-agent.js';
+import { ThemeAgent } from './agents/theme-agent.js';
+import { LoggerAgent } from './agents/logger-agent.js';
 
 const bus = new EventBus();
 
-const dataAgent = new AgentData(bus);
-const physicsAgent = new AgentPhysics(bus);
-const interfaceAgent = new AgentInterface(bus, dataAgent);
-const animationAgent = new AgentAnimation(bus, physicsAgent);
-const uiAgent = new AgentUI(bus);
-const themeAgent = new AgentTheme(bus);
-const loggerAgent = new AgentLogger(bus);
+const dataAgent = new DataAgent(bus);
+const physicsAgent = new PhysicsAgent(bus);
+const interfaceAgent = new InterfaceAgent(bus);
+const animationAgent = new AnimationAgent(bus, physicsAgent);
+const uiAgent = new UIAgent(bus);
+const themeAgent = new ThemeAgent(bus);
+const loggerAgent = new LoggerAgent(bus);
 
 (async () => {
-  loggerAgent.init();
   themeAgent.init();
+  loggerAgent.init();
   physicsAgent.init();
   interfaceAgent.init();
   animationAgent.init();
@@ -28,13 +28,12 @@ const loggerAgent = new AgentLogger(bus);
 })();
 
 window.__LAB_APP__ = {
-  bus,
   dispose() {
     uiAgent.dispose();
     animationAgent.dispose();
     interfaceAgent.dispose();
     dataAgent.dispose();
-    themeAgent.dispose();
-    loggerAgent.dispose();
+    themeAgent.dispose?.();
+    loggerAgent.dispose?.();
   }
 };

@@ -1,0 +1,63 @@
+{
+  "id": "inegalites-bell",
+  "title": "Inégalités de Bell",
+  "icon": "📈",
+  "summary": "Les tests de Bell comparent les corrélations quantiques à la limite imposée par toute théorie locale.",
+  "introduction": "La formulation CHSH des inégalités de Bell combine quatre configurations de polariseurs. En mécanique quantique, certaines orientations donnent une valeur S = 2√2, supérieure à la borne classique S ≤ 2.",
+  "tags": ["bell", "corrélation", "non-localité"],
+  "further": [
+    {
+      "label": "Universitaire",
+      "content": "La quantité CHSH s'exprime S = E(a, b) + E(a, b') + E(a', b) - E(a', b') avec E les corrélations ±1. Les modèles locaux vérifient |S| ≤ 2 alors que les états de Bell optimisent S = 2√2 en choisissant des angles séparés de 45°. Les expériences modernes ferment progressivement les principales échappatoires." 
+    }
+  ],
+  "animation": {
+    "type": "bellInequality",
+    "description": "Réglez quatre angles de polariseurs et observez la valeur de S comparée à la limite classique.",
+    "controls": [
+      {
+        "id": "angleA",
+        "label": "a",
+        "type": "range",
+        "min": 0,
+        "max": 180,
+        "step": 1,
+        "value": 0,
+        "unit": "°"
+      },
+      {
+        "id": "angleAprime",
+        "label": "a'",
+        "type": "range",
+        "min": 0,
+        "max": 180,
+        "step": 1,
+        "value": 90,
+        "unit": "°"
+      },
+      {
+        "id": "angleB",
+        "label": "b",
+        "type": "range",
+        "min": 0,
+        "max": 180,
+        "step": 1,
+        "value": 45,
+        "unit": "°"
+      },
+      {
+        "id": "angleBprime",
+        "label": "b'",
+        "type": "range",
+        "min": 0,
+        "max": 180,
+        "step": 1,
+        "value": 135,
+        "unit": "°"
+      }
+    ],
+    "parameters": {
+      "sampleSize": 400
+    }
+  }
+}

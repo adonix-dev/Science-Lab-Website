@@ -1,53 +1,60 @@
 {
-  "phenomenes": [
+  "experiments": [
     {
       "id": "fentes-de-young",
-      "titre": "Interférences à deux fentes (Expérience de Young)",
-      "resume": "Une particule quantique, envoyée à travers deux fentes, crée un motif d’interférences comme une onde. Même envoyées une par une, les particules forment des franges lumineuses et sombres. Observer le chemin détruit ces interférences.",
-      "universitaire": "La fonction d’onde se répartit sur les deux fentes, et les amplitudes de probabilité se superposent. L’intensité observée est proportionnelle au carré de la somme des amplitudes : I(x) ∝ |ψ1 + ψ2|². Une mesure de chemin détruit la cohérence, illustrant le principe de complémentarité de Bohr.",
-      "animation": "Impacts individuels de photons s’accumulant en interférences. Curseurs: ouvrir/fermer fentes, activer détecteur."
+      "title": "Interférences à deux fentes",
+      "summary": "Un faisceau quantique traversant deux fentes dessine des franges lumineuses même en flux de particules uniques.",
+      "icon": "🌊",
+      "tags": ["onde", "interférence", "double fente"],
+      "path": "experiments/fentes-de-young.json"
     },
     {
       "id": "mach-zehnder",
-      "titre": "Interféromètre de Mach-Zehnder",
-      "resume": "Un photon est séparé en deux chemins puis recombiné. Selon la différence de phase, les interférences dirigent le signal vers une sortie.",
-      "universitaire": "Après le premier séparateur, état (|A⟩ + |B⟩)/√2. Différence de phase Δφ → P1 = cos²(Δφ/2), P2 = sin²(Δφ/2).",
-      "animation": "Deux bras optiques. Curseur de phase Δφ. Afficher intensités sur deux détecteurs."
+      "title": "Interféromètre de Mach-Zehnder",
+      "summary": "Deux séparateurs de faisceau contrôlent la sortie d'un photon grâce au déphasage introduit entre les chemins.",
+      "icon": "🪞",
+      "tags": ["phase", "interférence", "optique"],
+      "path": "experiments/mach-zehnder.json"
     },
     {
       "id": "effet-photoelectrique",
-      "titre": "Effet photoélectrique",
-      "resume": "Une lumière suffisamment énergétique arrache des électrons d’une plaque métallique. En dessous d’une fréquence seuil, aucun électron n’est émis.",
-      "universitaire": "Photons d’énergie E = hν. Si E > W (travail d’extraction), l’électron sort avec Ec = hν - W.",
-      "animation": "Faisceau lumineux sur plaque. Curseur de fréquence ; afficher émission/absence et Ec max."
+      "title": "Effet photoélectrique",
+      "summary": "Sous la fréquence seuil, aucun électron n'est éjecté, quelle que soit l'intensité lumineuse.",
+      "icon": "🔆",
+      "tags": ["photon", "électron", "seuil"],
+      "path": "experiments/effet-photoelectrique.json"
     },
     {
       "id": "stern-gerlach",
-      "titre": "Spin quantique et expérience de Stern–Gerlach",
-      "resume": "Un faisceau d’atomes d’argent se sépare en deux directions distinctes dans un champ magnétique, révélant la quantification du spin.",
-      "universitaire": "Spin s=1/2 → valeurs propres de Sz = ±ħ/2. Interaction avec ∂Bz/∂z → deux déviations.",
-      "animation": "Faisceau se scindant en deux lobes. Curseur pour l’orientation de l’aimant."
+      "title": "Spin et expérience de Stern–Gerlach",
+      "summary": "Un faisceau atomique se sépare en deux lobes correspondant aux projections ±ħ/2 du spin.",
+      "icon": "🧲",
+      "tags": ["spin", "mesure", "aimant"],
+      "path": "experiments/stern-gerlach.json"
     },
     {
       "id": "effet-tunnel",
-      "titre": "Effet tunnel",
-      "resume": "Une particule peut traverser une barrière de potentiel même sans énergie suffisante classiquement.",
-      "universitaire": "Fonction d’onde décroît exponentiellement dans la barrière. Transmission T ≈ e^{-2κL} avec κ = √(2m(V0 - E))/ħ.",
-      "animation": "Paquet d’ondes incident sur barrière. Curseurs hauteur V0 et largeur L ; montrer réflexion/transmission."
+      "title": "Effet tunnel",
+      "summary": "Une particule traverse une barrière grâce à la pénétration de sa fonction d'onde.",
+      "icon": "🌌",
+      "tags": ["onde", "barrière", "probabilité"],
+      "path": "experiments/effet-tunnel.json"
     },
     {
       "id": "intrication",
-      "titre": "Intrication quantique",
-      "resume": "Deux particules sont liées : mesurer l’une corrèle instantanément l’autre, quelle que soit la distance (sans communication exploitable).",
-      "universitaire": "État singulet |Ψ−⟩ = (|↑↓⟩ - |↓↑⟩)/√2 non factorisable. Corrélations violant les inégalités de Bell.",
-      "animation": "Deux polariseurs A/B à angles réglables ; tracer corrélation cosinus et résultats de coïncidences."
+      "title": "Intrication quantique",
+      "summary": "Deux particules intriquées présentent des corrélations cosinus qui défient l'intuition classique.",
+      "icon": "🪐",
+      "tags": ["corrélation", "polariseur", "bell"],
+      "path": "experiments/intrication.json"
     },
     {
       "id": "inegalites-bell",
-      "titre": "Inégalités de Bell et tests EPR",
-      "resume": "Testent la localité/déterminisme. Les expériences montrent des corrélations dépassant la limite classique.",
-      "universitaire": "CHSH: |S| ≤ 2 pour modèles locaux ; MQ: S = 2√2 pour un état intriqué ; violation confirmée expérimentalement.",
-      "animation": "UI avec deux polariseurs, affichage de S mesuré et ligne de seuil classique à 2."
+      "title": "Inégalités de Bell",
+      "summary": "La combinaison CHSH de corrélations quantiques dépasse la borne locale |S| ≤ 2.",
+      "icon": "📈",
+      "tags": ["bell", "non-localité", "corrélation"],
+      "path": "experiments/inegalites-bell.json"
     }
   ]
 }

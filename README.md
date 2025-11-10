@@ -1,79 +1,88 @@
 # Lab – Visualisations quantiques interactives
 
-Bienvenue sur **Lab**, un laboratoire numérique qui illustre les phénomènes incontournables de la physique quantique. Le site est conçu pour être ouvert simplement en double-cliquant sur `index.html` et fonctionne intégralement en HTML/CSS/JavaScript sans serveur.
+Bienvenue sur **Lab**, un laboratoire numérique qui illustre les phénomènes incontournables de la physique quantique. Le site fonctionne intégralement en HTML/CSS/JavaScript et peut être ouvert en double-cliquant sur `index.html`.
 
 ## 🚀 Démarrage
 
 1. Clonez ou téléchargez le dépôt.
-2. Ouvrez le fichier `index.html` dans votre navigateur favori (Chrome, Firefox, Edge…).
-3. Naviguez entre les expériences depuis la grille d’accueil.
+2. Ouvrez `index.html` dans votre navigateur (Chrome, Firefox, Safari…).
+3. Cliquez sur une carte pour accéder à l’expérience correspondante.
 
-> 💡 **Astuce** : certains navigateurs limitent le chargement des fichiers `JSON` en mode `file://`. Si les cartes ne s’affichent pas, lancez un petit serveur statique (`python -m http.server`) depuis la racine du projet. Un jeu de données de secours est intégré côté client pour garantir le fonctionnement hors ligne.
+> 💡 **Chargement local** : certains navigateurs bloquent `fetch` sur des fichiers `JSON` en mode `file://`. Si les expériences ne se chargent pas, démarrez un mini-serveur (`python -m http.server`) depuis la racine du projet. Un jeu de données de secours est néanmoins embarqué pour un usage hors ligne.
 
 ## 🧱 Structure du projet
 
 ```
 .
-├── index.html
-├── experiments/
-│   ├── effet-photoelectrique.html
-│   ├── effet-tunnel.html
-│   ├── fentes-de-young.html
-│   ├── inegalites-bell.html
-│   ├── intrication.html
-│   ├── mach-zehnder.html
-│   └── stern-gerlach.html
+├── index.html                # Page d’accueil (grille + recherche)
+├── experiment.html           # Modèle unique pour toutes les expériences
+├── experiments/              # Données de chaque phénomène au format JSON
+│   ├── effet-tunnel.json
+│   ├── fentes-de-young.json
+│   ├── …
 ├── css/
-│   └── style.css
-├── js/
-│   ├── main.js
-│   ├── utils/
-│   │   └── event-bus.js
-│   └── agents/
-│       ├── agent-animation.js
-│       ├── agent-data.js
-│       ├── agent-interface.js
-│       ├── agent-logger.js
-│       ├── agent-physics.js
-│       ├── agent-theme.js
-│       └── agent-ui.js
+│   └── style.css             # Thème sombre et mise en page responsive
 ├── data/
-│   ├── phenomenes.json
-│   └── phenomenes-inline.js
-├── assets/
-├── README.md
-└── AGENTS.md
+│   ├── phenomenes.json       # Liste des expériences (métadonnées + chemins JSON)
+│   └── phenomenes-inline.js  # Fallback embarqué (liste + contenus détaillés)
+├── js/
+│   ├── main.js               # Bootstrap de l’application
+│   ├── utils/event-bus.js    # Bus d’événements minimaliste
+│   ├── agents/               # Agents métiers (données, interface, animations…)
+│   └── animations/           # Sketches p5.js modulaires
+├── AGENTS.md                 # Règles d’architecture orientée agents
+└── README.md
 ```
 
 ## 🧠 Architecture orientée agents
 
-Le cœur de l’application repose sur un **EventBus** minimaliste (`js/utils/event-bus.js`). Chaque module spécialisé écoute les événements dont il a besoin et publie ceux qu’il émet :
+Le cœur de l’application repose sur un **EventBus** (`js/utils/event-bus.js`). Chaque agent reste autonome et communique en publiant/écoutant des événements :
 
-- **AgentData** charge `data/phenomenes.json` et fournit les contenus des expériences (avec un fallback embarqué pour le mode hors ligne).
-- **AgentInterface** construit l’accueil, applique le filtrage et alimente les pages expériences.
-- **AgentAnimation** orchestre les animations p5.js dédiées à chaque phénomène.
-- **AgentPhysics** propose des helpers mathématiques pour les visualisations.
-- **AgentUI** génère les contrôles (curseurs) et relaie les interactions utilisateurs.
-- **AgentTheme** applique le thème sombre et les couleurs d’accent.
-- **AgentLogger** trace les événements pour faciliter le debug.
+- **DataAgent** charge `data/phenomenes.json`, gère le cache des fichiers JSON dans `experiments/` et bascule sur `phenomenes-inline.js` si nécessaire.
+- **InterfaceAgent** construit la page d’accueil, gère la recherche, installe la page d’expérience générique et déclenche le montage de l’animation.
+- **AnimationAgent** instancie les sketches p5.js correspondants (`js/animations/`) et réagit aux curseurs.
+- **PhysicsAgent** regroupe les fonctions de calcul (transmission tunnel, corrélation de Bell, etc.).
+- **UIAgent** génère dynamiquement les contrôles (curseurs, bascules) à partir de la configuration JSON.
+- **ThemeAgent** applique le thème sombre et la couleur d’accent cyan.
+- **LoggerAgent** trace les interactions utiles au debug.
 
-Le fichier `js/main.js` instancie ces agents et lance la séquence d’initialisation.
+`js/main.js` assemble et initialise ces agents.
 
-## 🎨 Expériences et contrôles
+## 🎨 Contenu des fichiers d’expérience
 
-Chaque page de la section `experiments/` charge dynamiquement son contenu depuis le JSON et installe une visualisation p5.js. Les curseurs situés sous l’animation vous permettent de modifier les paramètres essentiels : énergie et barrière pour l’effet tunnel, phase pour Mach-Zehnder, angles des polariseurs pour l’intrication, etc.
+Chaque expérience est décrite par un fichier JSON dans `experiments/` avec la structure suivante :
 
-Le bloc “Pour aller plus loin” contient l’extrait universitaire du PDF source et peut être replié/affiché à volonté.
+```json
+{
+  "id": "effet-tunnel",
+  "title": "Effet tunnel",
+  "icon": "🌌",
+  "summary": "Résumé court utilisé sur la carte",
+  "introduction": "Texte vulgarisé affiché sur la page",
+  "tags": ["onde", "probabilité"],
+  "further": [{ "label": "Universitaire", "content": "Texte académique" }],
+  "animation": {
+    "type": "tunnel",               // clé correspondant au sketch p5.js
+    "description": "Phrase affichée sous le titre",
+    "controls": [                     // paramètres exposés dans l’UI
+      { "id": "energy", "label": "Énergie", "type": "range", "min": 0.1, "max": 1, "step": 0.01, "value": 0.4 }
+    ],
+    "parameters": {                   // options spécifiques transmises au sketch
+      "speed": 0.9
+    }
+  }
+}
+```
+
+La page `experiment.html` lit l’identifiant dans `?id=` et va chercher le JSON correspondant. Les sections “Niveau curieux” et “Pour aller plus loin” sont injectées à partir des champs `introduction` et `further`.
 
 ## ➕ Ajouter un nouveau phénomène
 
-1. Ajouter un objet dans `data/phenomenes.json` avec les clés `id`, `titre`, `resume`, `universitaire`, `animation`.
-2. Créer une page `experiments/<id>.html` en copiant l’un des templates existants et en adaptant l’attribut `data-experiment-id`.
-3. Définir l’animation dans `js/agents/agent-animation.js` :
-   - Ajouter une entrée dans `createAnimationDefinitions()` avec `initialState`, `controls` et `sketch` p5.js.
-   - Exposer les paramètres nécessaires via `controls` pour que l’UI génère automatiquement les curseurs.
-4. Mettre à jour le fallback `data/phenomenes-inline.js` pour garantir la cohérence hors ligne.
+1. Créez `experiments/<id>.json` en reprenant la structure ci-dessus.
+2. Ajoutez les métadonnées associées dans `data/phenomenes.json` (`id`, `title`, `summary`, `icon`, `tags`, `path`).
+3. Implémentez le sketch p5.js correspondant dans `js/animations/` et exportez-le via `js/animations/index.js`.
+4. Si vous souhaitez assurer le fonctionnement hors ligne, ajoutez le même contenu dans `data/phenomenes-inline.js` (section `details`).
 
-Une fois ces étapes terminées, l’expérience apparaîtra automatiquement sur la page d’accueil et sera entièrement fonctionnelle.
+Aucune page HTML supplémentaire n’est nécessaire : l’interface réutilise `experiment.html` pour toutes les expériences.
 
-Bonnes explorations quantiques !
+Bonnes explorations quantiques !

@@ -1,0 +1,41 @@
+{
+  "id": "fentes-de-young",
+  "title": "Interférences à deux fentes",
+  "icon": "🌊",
+  "summary": "Un faisceau quantique traversant deux fentes dessine un motif d'interférences même lorsque les particules arrivent une à une.",
+  "introduction": "Les fentes de Young révèlent la dualité onde-corpuscule : si l'on n'observe pas le chemin, les impacts forment des franges lumineuses et sombres, signatures d'interférences.",
+  "tags": ["onde", "interférence", "double fente"],
+  "further": [
+    {
+      "label": "Universitaire",
+      "content": "La fonction d'onde incident se divise sur deux fentes, donnant ψ = ψ₁ + ψ₂. L'intensité sur l'écran suit I(x) ∝ |ψ₁ + ψ₂|² = |ψ₁|² + |ψ₂|² + 2Re(ψ₁ψ₂*). Une mesure de chemin détruit la cohérence et supprime le terme d'interférence, illustrant le principe de complémentarité." 
+    }
+  ],
+  "animation": {
+    "type": "doubleSlit",
+    "description": "Accumulation d'impacts sur un écran avec possibilité de fermer une fente ou d'activer un détecteur qui réduit la visibilité des franges.",
+    "controls": [
+      {
+        "id": "visibility",
+        "label": "Visibilité des interférences",
+        "type": "range",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 1,
+        "unit": "",
+        "description": "0 supprime les franges, 1 laisse la cohérence intacte."
+      },
+      {
+        "id": "openSlits",
+        "label": "Fentes ouvertes",
+        "type": "toggle",
+        "value": true,
+        "description": "Permet d'ouvrir ou fermer la seconde fente."
+      }
+    ],
+    "parameters": {
+      "emissionRate": 0.6
+    }
+  }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab — Fentes De Young</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-page="experiment" data-experiment-id="fentes-de-young">
+    <header class="topbar">
+      <a class="back-link" href="../index.html">← Retour au Lab</a>
+      <div class="topbar__titles">
+        <h1 id="experimentTitle"></h1>
+        <p id="experimentResume" class="experiment__resume"></p>
+      </div>
+    </header>
+    <main class="experiment">
+      <section class="experiment__content">
+        <article class="experiment__text">
+          <h2 class="section-title">Comprendre le phénomène</h2>
+          <p id="experimentUniversitaire"></p>
+        </article>
+        <article class="experiment__visual">
+          <div class="canvas-wrapper">
+            <div id="animationContainer" class="animation" aria-live="polite"></div>
+          </div>
+          <div id="controlsContainer" class="controls"></div>
+        </article>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+    <script type="module" src="../js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+{
+  "id": "effet-photoelectrique",
+  "title": "Effet photoélectrique",
+  "icon": "🔆",
+  "summary": "En dessous d'une fréquence seuil, aucune lumière ne peut éjecter d'électrons, quel que soit son éclat.",
+  "introduction": "L'effet photoélectrique a mené Einstein à proposer que la lumière est quantifiée en photons d'énergie hν. Seule une fréquence suffisante permet d'arracher des électrons d'une plaque métallique.",
+  "tags": ["photon", "électron", "seuil"],
+  "further": [
+    {
+      "label": "Universitaire",
+      "content": "Un photon apporte l'énergie E = hν. Si E dépasse le travail d'extraction W du métal, l'électron éjecté possède une énergie cinétique maximale Ec = hν - W. Les mesures de Millikan ont confirmé la relation linéaire entre Ec et ν." 
+    }
+  ],
+  "animation": {
+    "type": "photoelectric",
+    "description": "Un faisceau lumineux coloré frappe une plaque : ajustez la fréquence et l'intensité pour voir apparaître ou disparaître les électrons émis.",
+    "controls": [
+      {
+        "id": "frequency",
+        "label": "Fréquence lumineuse",
+        "type": "range",
+        "min": 3.0,
+        "max": 9.0,
+        "step": 0.1,
+        "value": 5.5,
+        "unit": "10¹⁴ Hz"
+      },
+      {
+        "id": "intensity",
+        "label": "Intensité",
+        "type": "range",
+        "min": 0.2,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.7,
+        "unit": "I"
+      }
+    ],
+    "parameters": {
+      "workFunction": 5.0
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "effet-photoelectrique",
+  "title": "Effet photoélectrique",
+  "icon": "🔆",
+  "summary": "Une lumière suffisamment énergétique arrache des électrons d’une plaque métallique. En dessous d’une fréquence seuil, aucun électron n’est émis.",
+  "introduction": "L'effet photoélectrique a mené Einstein à proposer que la lumière est quantifiée en photons d'énergie hν. Seule une fréquence suffisante permet d'arracher des électrons d'une plaque métallique.",
+  "tags": ["photon", "électron", "seuil"],
+  "further": [
+    {
+      "label": "Universitaire",
+      "content": "Un photon apporte l'énergie E = hν. Si E dépasse le travail d'extraction W du métal, l'électron éjecté possède une énergie cinétique maximale Ec = hν - W. Les mesures de Millikan ont confirmé la relation linéaire entre Ec et ν."
+    }
+  ],
+  "animation": {
+    "description": "Un faisceau lumineux coloré frappe une plaque : ajustez la fréquence et l'intensité pour voir apparaître ou disparaître les électrons émis.",
+    "controls": [
+      {
+        "id": "frequency",
+        "label": "Fréquence lumineuse",
+        "type": "range",
+        "min": 3.0,
+        "max": 9.0,
+        "step": 0.1,
+        "value": 5.5,
+        "unit": "10¹⁴ Hz"
+      },
+      {
+        "id": "intensity",
+        "label": "Intensité",
+        "type": "range",
+        "min": 0.2,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.7,
+        "unit": "I"
+      }
+    ],
+    "parameters": {
+      "workFunction": 5.0
+    },
+    "sketch": {
+      "library": "p5",
+      "code": "(() => {\n  const frequencyToColor = (p, frequency) => {\n    const t = Math.min(Math.max((frequency - 3) / 6, 0), 1);\n    const hue = p.lerp(200, 320, t);\n    return p.color(`hsla(${hue}, 80%, 60%, 0.85)`);\n  };\n  return {\n    setup({ state, params }) {\n      state.electrons = [];\n      state.workFunction = params.workFunction || 5;\n    },\n    draw({ p, state, helpers }) {\n      const width = p.width;\n      const height = p.height;\n      p.background(8, 10, 18, 240);\n      const result = helpers.physics.photoelectricEmission({\n        frequency: state.frequency,\n        intensity: state.intensity,\n        workFunction: state.workFunction\n      });\n      p.noStroke();\n      p.fill(25, 32, 48, 220);\n      p.rect(width * 0.2, height * 0.6, width * 0.6, height * 0.08, 12);\n      const photonColor = frequencyToColor(p, state.frequency);\n      const photonCount = Math.floor(4 + state.intensity * 12);\n      for (let i = 0; i < photonCount; i += 1) {\n        const offset = Math.random() * width * 0.6;\n        const x = width * 0.2 + offset;\n        const length = height * 0.3 * state.intensity;\n        p.stroke(photonColor);\n        p.strokeWeight(2);\n        p.line(x, height * 0.2, x, height * 0.2 + length);\n        if (result.emitted && Math.random() < result.rate * 0.3) {\n          state.electrons.push({ x, y: height * 0.6, vx: 1 + result.kineticEnergy * 0.8 });\n        }\n      }\n      p.noStroke();\n      p.fill(58, 215, 255, 180);\n      p.textSize(14);\n      p.textAlign(p.LEFT, p.TOP);\n      const kinetic = result.emitted ? result.kineticEnergy.toFixed(2) : '0.00';\n      p.text(`ν = ${state.frequency.toFixed(2)} × 10¹⁴ Hz`, 20, 20);\n      p.text(`Émission: ${result.emitted ? 'oui' : 'non'}`, 20, 40);\n      p.text(`Énergie cinétique max: ${kinetic}`, 20, 60);\n      for (let i = state.electrons.length - 1; i >= 0; i -= 1) {\n        const e = state.electrons[i];\n        e.x += e.vx * 4;\n        e.y -= Math.sin(e.x / 30) * 0.6;\n        p.fill(58, 215, 255, 200);\n        p.circle(e.x, e.y, 6);\n        if (e.x > width * 0.8) {\n          state.electrons.splice(i, 1);\n        }\n      }\n    },\n    update({ state, key, value }) {\n      state[key] = value;\n    },\n    replay({ state }) {\n      state.electrons = [];\n    }\n  };\n})()"
+    }
+  }
+}

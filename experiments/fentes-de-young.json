@@ -1,0 +1,41 @@
+{
+  "id": "fentes-de-young",
+  "title": "Interférences à deux fentes (Expérience de Young)",
+  "icon": "🌊",
+  "summary": "Une particule quantique, envoyée à travers deux fentes, crée un motif d’interférences comme une onde. Même envoyées une par une, les particules forment des franges lumineuses et sombres. Observer le chemin détruit ces interférences.",
+  "introduction": "Les fentes de Young révèlent la dualité onde-corpuscule : si l'on n'observe pas le chemin, les impacts forment des franges lumineuses et sombres, signatures d'interférences.",
+  "tags": ["onde", "interférence", "double fente"],
+  "further": [
+    {
+      "label": "Universitaire",
+      "content": "La fonction d'onde incident se divise sur deux fentes, donnant ψ = ψ₁ + ψ₂. L'intensité sur l'écran suit I(x) ∝ |ψ₁ + ψ₂|² = |ψ₁|² + |ψ₂|² + 2Re(ψ₁ψ₂*). Une mesure de chemin détruit la cohérence et supprime le terme d'interférence, illustrant le principe de complémentarité."
+    }
+  ],
+  "animation": {
+    "description": "Accumulation d'impacts sur un écran avec possibilité de fermer une fente ou d'activer un détecteur qui réduit la visibilité des franges.",
+    "controls": [
+      {
+        "id": "visibility",
+        "label": "Visibilité des interférences",
+        "type": "range",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 1
+      },
+      {
+        "id": "openSlits",
+        "label": "Fentes ouvertes",
+        "type": "toggle",
+        "value": true
+      }
+    ],
+    "parameters": {
+      "emissionRate": 0.6
+    },
+    "sketch": {
+      "library": "p5",
+      "code": "(() => {\n  return {\n    setup({ state, params }) {\n      state.particles = [];\n      state.maxParticles = 700;\n      state.emissionRate = params.emissionRate || 0.6;\n    },\n    draw({ p, state, helpers }) {\n      const width = p.width;\n      const height = p.height;\n      p.background(8, 10, 18, 245);\n      p.noStroke();\n      p.fill(20, 28, 45, 200);\n      p.rect(width * 0.1, height * 0.15, width * 0.8, height * 0.7, 18);\n      const emitCount = Math.floor(3 + (state.emissionRate || 0.6) * 8);\n      for (let i = 0; i < emitCount; i += 1) {\n        if (state.particles.length >= state.maxParticles) break;\n        const xNorm = helpers.random(-1, 1);\n        const intensity = helpers.physics.doubleSlitIntensity(xNorm, {\n          visibility: state.visibility,\n          openSlits: state.openSlits\n        });\n        if (Math.random() < intensity) {\n          const x = width * (0.1 + 0.8 * ((xNorm + 1) / 2));\n          const y = height * (0.15 + Math.random() * 0.7);\n          state.particles.push({ x, y, life: 1 });\n        }\n      }\n      if (state.particles.length > state.maxParticles) {\n        state.particles.splice(0, state.particles.length - state.maxParticles);\n      }\n      state.particles.forEach((particle) => {\n        particle.life *= 0.995;\n        p.fill(58, 215, 255, 220 * particle.life + 30);\n        p.noStroke();\n        p.circle(particle.x, particle.y, 4);\n      });\n      p.stroke(58, 215, 255, 120);\n      p.line(width / 2, height * 0.15, width / 2, height * 0.85);\n      p.noStroke();\n      p.fill(58, 215, 255, 200);\n      const message = state.openSlits ? 'Franges visibles' : 'Une seule fente ouverte';\n      p.textAlign(p.CENTER, p.BOTTOM);\n      p.text(message, width / 2, height - 12);\n    },\n    update({ state, key, value }) {\n      if (key === 'openSlits') {\n        state[key] = Boolean(value);\n      } else {\n        state[key] = value;\n      }\n    },\n    replay({ state }) {\n      state.particles = [];\n    }\n  };\n})()"
+    }
+  }
+}

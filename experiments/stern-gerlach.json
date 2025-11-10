@@ -1,0 +1,45 @@
+{
+  "id": "stern-gerlach",
+  "title": "Spin quantique et expérience de Stern–Gerlach",
+  "icon": "🧲",
+  "summary": "Un faisceau d’atomes d’argent se sépare en deux directions distinctes dans un champ magnétique, révélant la quantification du spin : chaque atome est soit 'spin up', soit 'spin down', jamais entre les deux.",
+  "introduction": "L'expérience de Stern et Gerlach montre que le moment magnétique d'un atome d'argent ne prend que deux valeurs projetées : spin up ou spin down. L'orientation du champ de mesure change la statistique des résultats.",
+  "tags": ["spin", "mesure", "aimant"],
+  "further": [
+    {
+      "label": "Universitaire",
+      "content": "Pour un spin s = 1/2, l'opérateur Sz a pour valeurs propres ±ħ/2. Le gradient de champ magnétique produit une force ±μ_B ∂B/∂z qui sépare le faisceau en deux composantes. Des mesures successives selon des axes non commutatifs reconstruisent la structure de l'espace de Hilbert."
+    }
+  ],
+  "animation": {
+    "description": "Des particules représentées par des points traversent une région magnétique et se séparent suivant l'orientation choisie.",
+    "controls": [
+      {
+        "id": "angle",
+        "label": "Orientation du champ",
+        "type": "range",
+        "min": 0,
+        "max": 180,
+        "step": 1,
+        "value": 45,
+        "unit": "°"
+      },
+      {
+        "id": "beamWidth",
+        "label": "Largeur du faisceau",
+        "type": "range",
+        "min": 0.2,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.6
+      }
+    ],
+    "parameters": {
+      "emissionRate": 0.8
+    },
+    "sketch": {
+      "library": "p5",
+      "code": "(() => {\n  return {\n    setup({ state, params }) {\n      state.atoms = [];\n      state.emissionRate = params.emissionRate || 0.8;\n    },\n    draw({ p, state, helpers }) {\n      const width = p.width;\n      const height = p.height;\n      p.background(8, 10, 18, 245);\n      const { separation, spread } = helpers.physics.sternGerlachDistribution(state.angle || 0, state.beamWidth || 0.6);\n      p.noStroke();\n      p.fill(25, 34, 52, 200);\n      p.rect(width * 0.4, height * 0.3, width * 0.2, height * 0.4, 18);\n      const newAtoms = Math.floor(2 + (state.emissionRate || 0.8) * 5);\n      for (let i = 0; i < newAtoms; i += 1) {\n        state.atoms.push({\n          x: width * 0.15,\n          y: height * 0.5 + (Math.random() - 0.5) * height * 0.15,\n          spin: Math.random() > 0.5 ? 1 : -1,\n          speed: 2 + Math.random() * 1.5\n        });\n      }\n      for (let i = state.atoms.length - 1; i >= 0; i -= 1) {\n        const atom = state.atoms[i];\n        atom.x += atom.speed;\n        const targetY = height * 0.5 + atom.spin * separation * height * 0.25;\n        atom.y += (targetY - atom.y) * 0.03;\n        atom.y += (Math.random() - 0.5) * spread;\n        p.fill(58, 215, 255, 220);\n        p.noStroke();\n        p.circle(atom.x, atom.y, 6);\n        if (atom.x > width * 0.85) {\n          state.atoms.splice(i, 1);\n        }\n      }\n      p.fill(58, 215, 255, 180);\n      p.textAlign(p.LEFT, p.TOP);\n      p.textSize(14);\n      p.text(`Orientation: ${(state.angle || 0).toFixed(0)}°`, 20, 20);\n      p.text(`Séparation relative: ${(separation * 100).toFixed(0)}%`, 20, 40);\n    },\n    update({ state, key, value }) {\n      state[key] = value;\n    },\n    replay({ state }) {\n      state.atoms = [];\n    }\n  };\n})()"
+    }
+  }
+}

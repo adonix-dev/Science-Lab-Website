@@ -1,0 +1,111 @@
+## PROMPT À DONNER À CODEX
+
+Crée un site web nommé **Lab**, hébergé sur `lab.antonylaget.com`.  
+Ce site doit présenter et illustrer les phénomènes de physique quantique listés dans le JSON ci-dessous à travers des **animations interactives**.
+
+### Objectif
+Aider les visiteurs à visualiser, comprendre et expérimenter les phénomènes quantiques. Chaque phénomène (effet tunnel, interférences, intrication, etc.) est présenté sur une page indépendante avec animation interactive et texte explicatif.
+
+### Structure attendue
+```
+/index.html
+/experiments/
+    effet-tunnel.html
+    fentes-de-young.html
+    stern-gerlach.html
+    mach-zehnder.html
+    effet-photoelectrique.html
+    intrication.html
+    inegalites-bell.html
+/js/
+    /agents/
+    main.js
+/css/
+    style.css
+/data/
+    phenomenes.json
+/assets/
+README.md
+AGENTS.md
+```
+
+- Accueil (`index.html`) : titre “Lab”, baseline “Expérimentez les limites du réel.”, grille de cartes (titre + résumé), recherche filtrante.
+- Page phénomène (`/experiments/...`) : titre, résumé, texte “universitaire”, zone d’animation (canvas/WebGL via p5.js ou Three.js), contrôles (curseurs), bouton “Retour au Lab”.
+
+### Contraintes techniques
+- HTML/CSS/JS pur. p5.js **ou** Three.js pour les animations.
+- Architecture orientée agents, conforme à `AGENTS.md` (fichier fourni). Lecture du contenu depuis `/data/phenomenes.json`.
+- Code commenté, clair, responsive, thème sombre avec accent cyan. Typo “IBM Plex Mono” ou “Inter”.
+- `README.md` : instructions d’ouverture locale (pas de serveur requis).
+
+### Comportement
+1. Accueil liste les expériences sous forme de cartes.
+2. Clic → navigation vers la page d’expérience correspondante.
+3. La page charge son contenu depuis le JSON.
+4. Animations paramétrables (énergie, phase, épaisseur de barrière, etc.).
+5. Transitions fluides entre pages.
+
+### Données `/data/phenomenes.json`
+{
+  "phenomenes": [
+    {
+      "id": "fentes-de-young",
+      "titre": "Interférences à deux fentes (Expérience de Young)",
+      "resume": "Une particule quantique, envoyée à travers deux fentes, crée un motif d’interférences comme une onde. Même envoyées une par une, les particules forment des franges lumineuses et sombres. Observer le chemin détruit ces interférences.",
+      "universitaire": "La fonction d’onde se répartit sur les deux fentes, et les amplitudes de probabilité se superposent. L’intensité observée est proportionnelle au carré de la somme des amplitudes : I(x) ∝ |ψ1 + ψ2|². Une mesure de chemin détruit la cohérence, illustrant le principe de complémentarité de Bohr.",
+      "animation": "Impacts individuels de photons s’accumulant en interférences. Curseurs: ouvrir/fermer fentes, activer détecteur."
+    },
+    {
+      "id": "mach-zehnder",
+      "titre": "Interféromètre de Mach-Zehnder",
+      "resume": "Un photon est séparé en deux chemins puis recombiné. Selon la différence de phase, les interférences dirigent le signal vers une sortie.",
+      "universitaire": "Après le premier séparateur, état (|A⟩ + |B⟩)/√2. Différence de phase Δφ → P1 = cos²(Δφ/2), P2 = sin²(Δφ/2).",
+      "animation": "Deux bras optiques. Curseur de phase Δφ. Afficher intensités sur deux détecteurs."
+    },
+    {
+      "id": "effet-photoelectrique",
+      "titre": "Effet photoélectrique",
+      "resume": "Une lumière suffisamment énergétique arrache des électrons d’une plaque métallique. En dessous d’une fréquence seuil, aucun électron n’est émis.",
+      "universitaire": "Photons d’énergie E = hν. Si E > W (travail d’extraction), l’électron sort avec Ec = hν - W.",
+      "animation": "Faisceau lumineux sur plaque. Curseur de fréquence ; afficher émission/absence et Ec max."
+    },
+    {
+      "id": "stern-gerlach",
+      "titre": "Spin quantique et expérience de Stern–Gerlach",
+      "resume": "Un faisceau d’atomes d’argent se sépare en deux directions dans un champ magnétique, révélant la quantification du spin.",
+      "universitaire": "Spin s=1/2 → valeurs propres de Sz = ±ħ/2. Interaction avec ∂Bz/∂z → deux déviations.",
+      "animation": "Faisceau se scindant en deux lobes. Curseur pour l’orientation de l’aimant."
+    },
+    {
+      "id": "effet-tunnel",
+      "titre": "Effet tunnel",
+      "resume": "Une particule peut traverser une barrière de potentiel même sans énergie suffisante classiquement.",
+      "universitaire": "Fonction d’onde décroît exponentiellement dans la barrière. Transmission T ≈ e^{-2κL} avec κ = √(2m(V0 - E))/ħ.",
+      "animation": "Paquet d’ondes incident sur barrière. Curseurs hauteur V0 et largeur L ; montrer réflexion/transmission."
+    },
+    {
+      "id": "intrication",
+      "titre": "Intrication quantique",
+      "resume": "Deux particules sont liées : mesurer l’une corrèle instantanément l’autre, quelle que soit la distance (sans communication exploitable).",
+      "universitaire": "État singulet |Ψ−⟩ = (|↑↓⟩ - |↓↑⟩)/√2 non factorisable. Corrélations violant les inégalités de Bell.",
+      "animation": "Deux polariseurs A/B à angles réglables ; tracer corrélation cosinus et résultats de coïncidences."
+    },
+    {
+      "id": "inegalites-bell",
+      "titre": "Inégalités de Bell et tests EPR",
+      "resume": "Testent la localité/déterminisme. Les expériences montrent des corrélations dépassant la limite classique.",
+      "universitaire": "CHSH: |S| ≤ 2 pour modèles locaux ; MQ: S = 2√2 pour un état intriqué ; violation confirmée expérimentalement.",
+      "animation": "UI avec deux polariseurs, affichage de S mesuré et ligne de seuil classique à 2."
+    }
+  ]
+}
+
+### À produire
+1. Code complet du site selon la structure ci-dessus.
+2. Fichier `/data/phenomenes.json` avec les données fournies.
+3. `index.html`, une page par phénomène, JS des agents, CSS global, `README.md`, et inclure `AGENTS.md`.
+4. Ouverture locale sans serveur (fichiers statiques).
+5. Chaque expérience est dans le dossier /experiments mais sont au format json afin de standardiser leur format qui contient tout le code de l'expérience.
+
+### Résumé d’intention
+Laboratoire visuel minimaliste et scientifique, thème sombre, interactions sobres. Les animations doivent être suffisamment explicites pour mettre en évidence le comportement non intuitif des phénomènes, sans bling inutile.
